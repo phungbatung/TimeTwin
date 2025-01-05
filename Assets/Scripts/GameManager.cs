@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     public RecordStatus recordStatus { get; private set; }
 
-    public Action OnRestartAction;
+    public Action OnRestart;
     private void Awake()
     {
         if (Instance == null)
@@ -57,9 +57,14 @@ public class GameManager : MonoBehaviour
     public void Restart()
     {
         //Restart
-        OnRestartAction?.Invoke();
+        OnRestart?.Invoke();
         recordStatus = RecordStatus.NotStarted;
     }
+
+    public void Victory()
+    {
+
+    }    
 
     public void OpenMenu()
     {

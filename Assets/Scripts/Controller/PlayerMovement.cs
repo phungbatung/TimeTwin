@@ -21,6 +21,11 @@ public class PlayerMovement : MonoBehaviour
         rootPosition = transform.position;
     }
 
+    private void Start()
+    {
+        GameManager.Instance.OnRestart += ResetPostion;
+        
+    }
     public void Update()
     {
         rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);

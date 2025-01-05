@@ -7,6 +7,10 @@ public class CloneMovement : MonoBehaviour
 {
     private ReplaySystem rep;
     private bool facingRight = true;
+    private void Start()
+    {
+        GameManager.Instance.OnRestart+=DestroyGO;
+    }
     public void Update()
     {
         if (rep != null)
@@ -38,5 +42,10 @@ public class CloneMovement : MonoBehaviour
     public void SetupData(ReplaySystem _rep)
     {
         rep = _rep;
+    }
+
+    public void DestroyGO()
+    {
+        Destroy(gameObject);
     }
 }

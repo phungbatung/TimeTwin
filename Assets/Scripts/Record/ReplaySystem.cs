@@ -20,6 +20,10 @@ public class ReplaySystem : MonoBehaviour
     {
         recordData = new List<RecordData>();
     }
+    private void Start()
+    {
+        GameManager.Instance.OnRestart += ResetToDefault;
+    }
     //private float currentIndex;
     private void Update()
     {
@@ -73,7 +77,6 @@ public class ReplaySystem : MonoBehaviour
         }
         RecordData res = recordData[0];
         float timeStamp = Time.time - replayStartTime;
-        Debug.Log(timeStamp);
         if (timeStamp >= recordData[recordData.Count - 1].timeStamp)
         {
             res = recordData[recordData.Count - 1];
@@ -90,8 +93,14 @@ public class ReplaySystem : MonoBehaviour
                 }
             }
         }
-        Debug.Log($"{res.timeStamp}--{res.pos}--{res.facingRight}");
         return res;
     }
-    
+
+    public void ResetToDefault()
+    {
+        player = null;
+        recordData = null;
+        isRecording = false;
+        hasNextRecordData = false;
+    }
 }

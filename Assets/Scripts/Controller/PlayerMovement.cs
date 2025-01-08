@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IPortalInteractable
 {
     private float horizontal = 0;
     public bool facingRight { get; private set; }
@@ -67,5 +67,11 @@ public class PlayerMovement : MonoBehaviour
     public void ResetPostion()
     {
         transform.position = rootPosition;
+    }
+
+    public void Teleport(Vector3 destination)
+    {
+        transform.position=destination;
+        rb.velocity=Vector2.zero;
     }
 }

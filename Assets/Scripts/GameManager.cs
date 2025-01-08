@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         record = GetComponent<ReplaySystem>();
         LoadProgress();
+
     }
 
     private void Update()

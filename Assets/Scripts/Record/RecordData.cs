@@ -14,6 +14,5 @@ public class RecordData
         pos = _pos;
         facingRight = _facingRight;
         timeStamp = _timeStamp;
-        Debug.Log($"{timeStamp}--{pos}--{facingRight}");
     }
 }

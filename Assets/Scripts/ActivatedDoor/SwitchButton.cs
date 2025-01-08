@@ -6,12 +6,13 @@ public class SwitchButton : MonoBehaviour
 {
     private ActivatedDoorSystem activatedDoorSystem;
     private float closeLength = 0.1f;
-    private float openLength = 0.3f;
+    private float openLength;
     private Vector3 rootPos;
     private void Awake()
     {
         activatedDoorSystem = GetComponentInParent<ActivatedDoorSystem>();
         rootPos=transform.position;
+        openLength= transform.localScale.y;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -37,40 +37,45 @@ public class SwitchDoor : MonoBehaviour
 
     public void Close() 
     {
-
+        StartCoroutine("CloseTheDoor");
     }
 
     
 
     public IEnumerator OpenTheDoor()
     {
-
+        StopCoroutine("CloseTheDoor");
         Vector3 openDir = openDirection[(int)openDirEnum];
         while (transform.localScale != openScale)
         {
 
             transform.localScale = new Vector3(transform.localScale.x - Mathf.Abs(openDir.x) * openSpeed * Time.deltaTime,
                                                 transform.localScale.y - Mathf.Abs(openDir.y) * openSpeed * Time.deltaTime, 1);
-            if (transform.localScale.x < openScale.x)
-                transform.localScale = new Vector3(openScale.x, transform.localScale.y, transform.localScale.z);
-            if (transform.localScale.y < openScale.y)
-                transform.localScale = new Vector3(transform.localScale.x, openScale.y, transform.localScale.z);
-            transform.position = new Vector3(openDir.x == 0 ? closePos.x : (closePos.x - openDir.x * (transform.localScale.x-closeScale.x) / (openScale.x-closeScale.x)* (openPos.x - closePos.x)),
-                                                openDir.y == 0 ? closePos.y : (closePos.y - openDir.y * (transform.localScale.y - closeScale.y) / (openScale.x - closeScale.y) * (openPos.y - closePos.y)), 0);
+            transform.localScale = new Vector3(transform.localScale.x < openScale.x ? openScale.x : transform.localScale.x,
+                                               transform.localScale.y < openScale.y ? openScale.y : transform.localScale.y, transform.localScale.z);
+            Debug.Log($"{(transform.localScale.y - openScale.y) / (closeScale.x - openScale.y) * (closePos.y - openPos.y)}");
+            transform.position = new Vector3(openDir.x == 0 ? closePos.x : (openPos.x + (transform.localScale.x - openScale.x) / (closeScale.x - openScale.x) * (closePos.x - openPos.x)),
+                                             openDir.y == 0 ? closePos.y : (openPos.y + (transform.localScale.y - openScale.y) / (closeScale.y - openScale.y) * (closePos.y - openPos.y)), 0);
             yield return null;
-        }    
+        }
+        Debug.Log("end");
     }
 
     public IEnumerator CloseTheDoor()
     {
+        StopCoroutine("OpenTheDoor");
         Vector3 openDir = openDirection[(int)openDirEnum];
 
         while (transform.localScale != closeScale)
         {
             transform.localScale = new Vector3(transform.localScale.x + Mathf.Abs(openDir.x) * openSpeed * Time.deltaTime,
                                                 transform.localScale.y + Mathf.Abs(openDir.y) * openSpeed * Time.deltaTime, 1);
-            transform.position = new Vector3(openDir.x == 0 ? closePos.x : (closePos.x - openDir.x * (transform.localScale.x - closeScale.x) / (openScale.x - closeScale.x) * (openPos.x - closePos.x)),
-                                                 openDir.y == 0 ? closePos.y : (closePos.y - openDir.y * (transform.localScale.y - closeScale.y) / (openScale.x - closeScale.y) * (openPos.y - closePos.y)), 0);
+            if (transform.localScale.x > closeScale.x)
+                transform.localScale = new Vector3(closeScale.x, transform.localScale.y, transform.localScale.z);
+            if (transform.localScale.y > closeScale.y)
+                transform.localScale = new Vector3(transform.localScale.x, closeScale.y, transform.localScale.z);
+            transform.position = new Vector3(openDir.x == 0 ? closePos.x : (openPos.x + (transform.localScale.x - openScale.x) / (closeScale.x - openScale.x) * (closePos.x - openPos.x)),
+                                             openDir.y == 0 ? closePos.y : (openPos.y + (transform.localScale.y - openScale.y) / (closeScale.y - openScale.y) * (closePos.y - openPos.y)), 0); 
             yield return null;
         }
     }

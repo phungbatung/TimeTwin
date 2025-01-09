@@ -44,9 +44,9 @@ GameObject:
   - component: {fileID: 746199563885121652}
   - component: {fileID: 22475202436649457}
   - component: {fileID: -2986755790005109241}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Clone
-  m_TagString: Untagged
+  m_TagString: MovingObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

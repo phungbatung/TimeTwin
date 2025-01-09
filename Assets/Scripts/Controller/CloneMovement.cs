@@ -9,7 +9,7 @@ public class CloneMovement : MonoBehaviour
     private bool facingRight = true;
     private void Start()
     {
-        GameManager.Instance.OnRestart+=DestroyGO;
+        
     }
     public void Update()
     {
@@ -27,6 +27,10 @@ public class CloneMovement : MonoBehaviour
             }
         }
     }
+    private void OnDestroy()
+    {
+        GameManager.Instance.OnRestart -= DestroyGO;
+    }
     public void Flip()
     {
         transform.Rotate(new Vector3(0, 180, 0));
@@ -42,10 +46,12 @@ public class CloneMovement : MonoBehaviour
     public void SetupData(ReplaySystem _rep)
     {
         rep = _rep;
+        GameManager.Instance.OnRestart += DestroyGO;
     }
 
     public void DestroyGO()
     {
         Destroy(gameObject);
     }
+
 }

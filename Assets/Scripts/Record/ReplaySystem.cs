@@ -6,7 +6,7 @@ using static UnityEditor.PlayerSettings;
 public class ReplaySystem : MonoBehaviour
 {
     private PlayerMovement player;
-    public List<RecordData> recordData;
+    public List<RecordData> recordData { get; private set; }
     private bool isRecording = false;
     private bool isTimeLimited;
     [SerializeField] private float recordRate;
@@ -16,13 +16,10 @@ public class ReplaySystem : MonoBehaviour
 
     private float replayStartTime;
     public bool hasNextRecordData { get; private set; }
-    private void Awake()
-    {
-        recordData = new List<RecordData>();
-    }
     private void Start()
     {
         GameManager.Instance.OnRestart += ResetToDefault;
+        recordData = new();
     }
     //private float currentIndex;
     private void Update()
@@ -42,6 +39,7 @@ public class ReplaySystem : MonoBehaviour
         recordTimer = 0f;
         //currentIndex = 0;
         isRecording = true;
+        
     }    
 
     public void Record()
@@ -99,7 +97,7 @@ public class ReplaySystem : MonoBehaviour
     public void ResetToDefault()
     {
         player = null;
-        recordData = null;
+        recordData.Clear();
         isRecording = false;
         hasNextRecordData = false;
     }

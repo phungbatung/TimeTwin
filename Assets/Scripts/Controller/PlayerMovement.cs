@@ -21,11 +21,10 @@ public class PlayerMovement : MonoBehaviour, IPortalInteractable
         facingRight = true;
         rootPosition = transform.position;
     }
-
+    
     private void Start()
     {
         GameManager.Instance.OnRestart += ResetPostion;
-        
     }
     public void Update()
     {

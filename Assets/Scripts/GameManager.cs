@@ -22,13 +22,13 @@ public class GameManager : MonoBehaviour
 
     public RecordStatus recordStatus { get; private set; }
 
-    public Action OnRestart;
+    public Action OnRestart { get; set; }
 
     public GameObject menuScreen;
     public GameObject victoryScreen;
 
 
-    public int currentLevel;
+    public int currentLevel { get; set; }
     public int levelProgress;
     private void Awake()
     {
@@ -37,16 +37,9 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
         record = GetComponent<ReplaySystem>();
+        currentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
         LoadProgress();
 
-    }
-
-    private void Update()
-    {
-        if (recordStatus == RecordStatus.Recording)
-        {
-
-        }
     }
 
     public void Record()
@@ -109,7 +102,8 @@ public class GameManager : MonoBehaviour
 
     public void LoadSceneAtLevel(int level)
     {
-        currentLevel = level;
+        PlayerPrefs.SetInt("CurrentLevel", level);
+        UnfreezeTime();
         SceneManager.LoadScene($"Level{level}");
     }
 
@@ -142,7 +136,6 @@ public class GameManager : MonoBehaviour
         catch (Exception ex)
         {
             Debug.LogException(ex);
-            currentLevel = 0;
         }
     }   
     public void LoadProgress()
@@ -162,7 +155,7 @@ public class GameManager : MonoBehaviour
                         dataToLoad = reader.ReadToEnd();
                     }
                 }
-                currentLevel = int.Parse(dataToLoad);
+                levelProgress = int.Parse(dataToLoad);
             }
             catch (Exception ex)
             {
@@ -171,8 +164,30 @@ public class GameManager : MonoBehaviour
         }
         else 
         { 
-            currentLevel = 0; 
+            levelProgress = 0; 
         }
 
     }
+    [ContextMenu("ResetSaveData")]
+    public void ResetData()
+    {
+        try
+        {
+            string path = Path.Combine(Application.persistentDataPath, "ProgressData.txt");
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.Write("0");
+                }
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Debug.LogException(ex);
+        }
+    }    
 }

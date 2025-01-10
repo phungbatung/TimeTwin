@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,7 +24,7 @@ public class GameManager : MonoBehaviour
     public RecordStatus recordStatus { get; private set; }
 
     public Action OnRestart { get; set; }
-
+    public Action OnReplay { get; set; }
     public GameObject menuScreen;
     public GameObject victoryScreen;
 
@@ -39,9 +40,17 @@ public class GameManager : MonoBehaviour
         record = GetComponent<ReplaySystem>();
         currentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
         LoadProgress();
-
+        FindAllResetableObject();
     }
-
+    private void FindAllResetableObject()
+    {
+        IEnumerable < IResettable > resettables = FindObjectsOfType<MonoBehaviour>().OfType<IResettable>();
+        List<IResettable> resettableObjects = new List<IResettable>(resettables);
+        foreach(var obj in resettableObjects)
+        {
+            OnRestart += obj.ResetToDefault;
+        }
+    }
     public void Record()
     {
         //Record
@@ -51,7 +60,7 @@ public class GameManager : MonoBehaviour
 
     public void Replay()
     {
-        player.ResetPostion();
+        OnReplay?.Invoke();
         Instantiate(clonePrefab).GetComponent<CloneMovement>().SetupData(record);
         record.EndRecord();
 

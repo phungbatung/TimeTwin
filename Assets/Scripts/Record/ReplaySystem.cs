@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
-public class ReplaySystem : MonoBehaviour
+public class ReplaySystem : MonoBehaviour, IResettable
 {
     private PlayerMovement player;
     public List<RecordData> recordData { get; private set; }
@@ -18,7 +17,6 @@ public class ReplaySystem : MonoBehaviour
     public bool hasNextRecordData { get; private set; }
     private void Start()
     {
-        GameManager.Instance.OnRestart += ResetToDefault;
         recordData = new();
     }
     //private float currentIndex;

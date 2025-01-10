@@ -5,11 +5,12 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class CloneMovement : MonoBehaviour
 {
+    private SpriteRenderer sr;
     private ReplaySystem rep;
     private bool facingRight = true;
-    private void Start()
+    private void Awake()
     {
-        
+        sr= GetComponent<SpriteRenderer>();
     }
     public void Update()
     {
@@ -33,7 +34,7 @@ public class CloneMovement : MonoBehaviour
     }
     public void Flip()
     {
-        transform.Rotate(new Vector3(0, 180, 0));
+        sr.flipX = !sr.flipX;
     }
     public void FlipCheck(bool _facingRight)
     {

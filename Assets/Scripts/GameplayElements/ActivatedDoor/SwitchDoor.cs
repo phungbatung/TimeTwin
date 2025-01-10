@@ -7,7 +7,7 @@ public enum Direction
 {
     Up = 0, Down = 1, Left = 2, Right = 3
 }
-public class SwitchDoor : MonoBehaviour
+public class SwitchDoor : MonoBehaviour, IResettable
 {
     [SerializeField] private Direction openDirEnum;
     [SerializeField] private float openSpeed;
@@ -29,6 +29,11 @@ public class SwitchDoor : MonoBehaviour
         openScale = new Vector3(openDir.x==0?closeScale.x : closeLength, openDir.y == 0 ? closeScale.y : closeLength, transform.localScale.z);
         openPos = new Vector3(closePos.x + openDir.x * (closeScale.x - openScale.x) / 2, 
                                 closePos.y + openDir.y * (closeScale.y - openScale.y) / 2, 0);
+    }
+    private void Start()
+    {
+        GameManager.Instance.OnReplay += ResetToDefault;
+        
     }
     public void Open()
     {
@@ -53,12 +58,11 @@ public class SwitchDoor : MonoBehaviour
                                                 transform.localScale.y - Mathf.Abs(openDir.y) * openSpeed * Time.deltaTime, 1);
             transform.localScale = new Vector3(transform.localScale.x < openScale.x ? openScale.x : transform.localScale.x,
                                                transform.localScale.y < openScale.y ? openScale.y : transform.localScale.y, transform.localScale.z);
-            Debug.Log($"{(transform.localScale.y - openScale.y) / (closeScale.x - openScale.y) * (closePos.y - openPos.y)}");
             transform.position = new Vector3(openDir.x == 0 ? closePos.x : (openPos.x + (transform.localScale.x - openScale.x) / (closeScale.x - openScale.x) * (closePos.x - openPos.x)),
                                              openDir.y == 0 ? closePos.y : (openPos.y + (transform.localScale.y - openScale.y) / (closeScale.y - openScale.y) * (closePos.y - openPos.y)), 0);
             yield return null;
         }
-        Debug.Log("end");
+        StopCoroutine("OpenTheDoor");
     }
 
     public IEnumerator CloseTheDoor()
@@ -78,5 +82,13 @@ public class SwitchDoor : MonoBehaviour
                                              openDir.y == 0 ? closePos.y : (openPos.y + (transform.localScale.y - openScale.y) / (closeScale.y - openScale.y) * (closePos.y - openPos.y)), 0); 
             yield return null;
         }
+        StopCoroutine("CloseTheDoor");
+    }
+
+    public void ResetToDefault()
+    {
+        transform.position = closePos;
+        transform.localScale=closeScale;
+        StopAllCoroutines();
     }
 }

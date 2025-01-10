@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class PlayerMovement : MonoBehaviour, IPortalInteractable
+public class PlayerMovement : MonoBehaviour, IPortalInteractable, IResettable
 {
     private float horizontal = 0;
     public bool facingRight { get; private set; }
@@ -14,17 +14,19 @@ public class PlayerMovement : MonoBehaviour, IPortalInteractable
     [SerializeField] LayerMask groundLayer;
 
     private Rigidbody2D rb;
+    private SpriteRenderer sr;
     private Vector3 rootPosition;
     private void Awake()
     {
         rb=GetComponent<Rigidbody2D>();
+        sr=GetComponent<SpriteRenderer>();
         facingRight = true;
         rootPosition = transform.position;
     }
-    
     private void Start()
     {
-        GameManager.Instance.OnRestart += ResetPostion;
+        GameManager.Instance.OnReplay += ResetToDefault;
+        
     }
     public void Update()
     {
@@ -34,7 +36,7 @@ public class PlayerMovement : MonoBehaviour, IPortalInteractable
     public void Flip()
     {
         facingRight = !facingRight;
-        transform.Rotate(new Vector3(0, 180, 0));
+        sr.flipX = !sr.flipX;
     }
     public void FlipCheck()
     {
@@ -65,12 +67,17 @@ public class PlayerMovement : MonoBehaviour, IPortalInteractable
     }
     public void ResetPostion()
     {
-        transform.position = rootPosition;
+        
     }
 
     public void Teleport(Vector3 destination)
     {
         transform.position=destination;
         rb.velocity=Vector2.zero;
+    }
+
+    public void ResetToDefault()
+    {
+        transform.position = rootPosition;
     }
 }

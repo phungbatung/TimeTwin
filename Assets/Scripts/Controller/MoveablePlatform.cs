@@ -11,6 +11,7 @@ public class MoveablePlatform : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+
         collision.GetComponent<PlayerMovement>()?.transform.SetParent(null);
     }
 }

@@ -35,6 +35,10 @@ public class SwitchDoor : MonoBehaviour, IResettable
         GameManager.Instance.OnReplay += ResetToDefault;
         
     }
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
     public void Open()
     {
         StartCoroutine("OpenTheDoor");

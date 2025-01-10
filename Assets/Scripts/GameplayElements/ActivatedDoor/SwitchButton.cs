@@ -50,7 +50,6 @@ public class SwitchButton : MonoBehaviour, IResettable
 
     public void ResetToDefault()
     {
-
         transform.position = rootPos;
         transform.localScale = new Vector3(transform.localScale.x, closeLength, transform.localScale.z);
     }

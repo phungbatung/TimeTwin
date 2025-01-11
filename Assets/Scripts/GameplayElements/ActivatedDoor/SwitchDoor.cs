@@ -21,8 +21,11 @@ public class SwitchDoor : MonoBehaviour, IResettable
     private Vector3 openScale;
     private float closeLength=0.3f;
 
+
+    private BoxCollider2D cd;
     private void Awake()
     {
+        cd=GetComponent<BoxCollider2D>();
         Vector3 openDir = openDirection[(int)openDirEnum];
         closeScale = transform.localScale;
         closePos= transform.position;
@@ -62,12 +65,14 @@ public class SwitchDoor : MonoBehaviour, IResettable
                                              openDir.y == 0 ? closePos.y : (openPos.y + (transform.localScale.y - openScale.y) / (closeScale.y - openScale.y) * (closePos.y - openPos.y)), 0);
             yield return null;
         }
+        cd.enabled = false;
         StopCoroutine("OpenTheDoor");
     }
 
     public IEnumerator CloseTheDoor()
     {
         StopCoroutine("OpenTheDoor");
+        cd.enabled = true;
         Vector3 openDir = openDirection[(int)openDirEnum];
 
         while (transform.localScale != closeScale)

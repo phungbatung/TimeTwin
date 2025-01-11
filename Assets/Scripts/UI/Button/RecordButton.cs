@@ -13,6 +13,10 @@ public class RecordButton : ButtonBase, IResettable
         base.Awake();
         image = GetComponent<Image>();
     }
+    private void Start()
+    {
+        GameManager.Instance.OnReplay += Disable;
+    }
     public override void OnClickAction()
     {
         RecordStatus stt = GameManager.Instance.recordStatus;
@@ -24,8 +28,12 @@ public class RecordButton : ButtonBase, IResettable
         else if (stt == RecordStatus.Recording)
         {
             GameManager.Instance.Replay();
-            gameObject.SetActive(false);
         }
+    }
+
+    public void Disable()
+    {
+        gameObject.SetActive(false);
     }
 
     public void ResetToDefault()

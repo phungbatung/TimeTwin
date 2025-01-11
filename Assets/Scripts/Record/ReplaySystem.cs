@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ReplaySystem : MonoBehaviour, IResettable
 {
+
     private PlayerMovement player;
     public List<RecordData> recordData { get; private set; }
     private bool isRecording = false;
@@ -15,6 +16,7 @@ public class ReplaySystem : MonoBehaviour, IResettable
 
     private float replayStartTime;
     public bool hasNextRecordData { get; private set; }
+    [SerializeField] private Timer_UI timerUI;
     private void Start()
     {
         recordData = new();
@@ -26,15 +28,15 @@ public class ReplaySystem : MonoBehaviour, IResettable
             Record();
     }
 
-    public void StartRecord(PlayerMovement _player ,float _recorduration=-1)
+    public void StartRecord(PlayerMovement _player ,LevelData _levelData)
     {
-        if(_recorduration==-1)
-            isTimeLimited = false;
-        else
-            recordDuration = _recorduration;
+        isTimeLimited = _levelData.isTimeLimited;
+        recordDuration = _levelData.recorfDuration;
+        timerUI.Setup(recordDuration);
+        timerUI.gameObject.SetActive(isTimeLimited);
         player = _player;
         recordTimeFixed = recordRate;
-        recordTimer = 0f;
+        recordTimer = recordDuration;
         //currentIndex = 0;
         isRecording = true;
         
@@ -43,17 +45,18 @@ public class ReplaySystem : MonoBehaviour, IResettable
     public void Record()
     {
         
-        recordTimer += Time.deltaTime;
+        recordTimer -= Time.deltaTime;
+        timerUI.UpdateTimer(recordTimer);
         recordTimeFixed += Time.deltaTime;
         if (recordTimeFixed>=recordRate)
         {
-            recordData.Add(new RecordData(player.transform.position, player.facingRight, recordTimer));
+            recordData.Add(new RecordData(player.transform.position, player.facingRight, recordDuration - recordTimer));
             recordTimeFixed -= recordRate;
         }
         if (isTimeLimited)
         {
-            if(recordTimer >= recordDuration)
-                EndRecord();
+            if (recordTimer <= 0)
+                GameManager.Instance.Replay();
         }
     }
 
@@ -62,6 +65,7 @@ public class ReplaySystem : MonoBehaviour, IResettable
         isRecording = false;
         hasNextRecordData = true;
         replayStartTime = Time.time;
+        timerUI.gameObject.SetActive(false);
     }
 
     public RecordData GetRecordData()
@@ -98,5 +102,6 @@ public class ReplaySystem : MonoBehaviour, IResettable
         recordData.Clear();
         isRecording = false;
         hasNextRecordData = false;
+        timerUI.gameObject.SetActive(false);
     }
 }

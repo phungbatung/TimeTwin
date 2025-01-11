@@ -18,8 +18,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [SerializeField] private GameObject clonePrefab;
-    public PlayerMovement player;
-    public ReplaySystem record { get; private set; }
+    [SerializeField] private LevelsDataSO levelsData;
+    public PlayerMovement player { get; set; }
+    public ReplaySystem record;
 
     public RecordStatus recordStatus { get; private set; }
 
@@ -30,14 +31,14 @@ public class GameManager : MonoBehaviour
 
 
     public int currentLevel { get; set; }
-    public int levelProgress;
+    public int levelProgress { get; set; }
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
-        record = GetComponent<ReplaySystem>();
+        player = GameObject.Find("Player")?.GetComponent<PlayerMovement>();
         currentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
         LoadProgress();
         FindAllResetableObject();
@@ -54,7 +55,7 @@ public class GameManager : MonoBehaviour
     public void Record()
     {
         //Record
-        record.StartRecord(player);
+        record.StartRecord(player, levelsData[currentLevel]);
         recordStatus = RecordStatus.Recording;
     }
 

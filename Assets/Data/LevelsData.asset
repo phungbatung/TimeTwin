@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e782c9a048ab3d43b5286e45f76f508, type: 3}
+  m_Name: LevelsData
+  m_EditorClassIdentifier: 
+  levelsData:
+  - isTimeLimited: 0
+    recorfDuration: 0
+  - isTimeLimited: 0
+    recorfDuration: 0
+  - isTimeLimited: 0
+    recorfDuration: 0
+  - isTimeLimited: 0
+    recorfDuration: 0
+  - isTimeLimited: 0
+    recorfDuration: 0
+  - isTimeLimited: 1
+    recorfDuration: 10
+  - isTimeLimited: 1
+    recorfDuration: 10
+  - isTimeLimited: 1
+    recorfDuration: 10
+  - isTimeLimited: 1
+    recorfDuration: 10
+  - isTimeLimited: 1
+    recorfDuration: 10
+  - isTimeLimited: 1
+    recorfDuration: 10
+  - isTimeLimited: 1
+    recorfDuration: 15
+  - isTimeLimited: 1
+    recorfDuration: 5

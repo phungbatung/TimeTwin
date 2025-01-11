@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class CloneMovement : MonoBehaviour
 {
@@ -31,6 +30,7 @@ public class CloneMovement : MonoBehaviour
     private void OnDestroy()
     {
         GameManager.Instance.OnRestart -= DestroyGO;
+        GetComponentInChildren<PlayerMovement>()?.transform.SetParent(null);
     }
     public void Flip()
     {

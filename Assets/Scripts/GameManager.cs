@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [SerializeField] private GameObject clonePrefab;
-    [SerializeField] private LevelsDataSO levelsData;
+    public LevelsDataSO levelsData;
     public PlayerMovement player { get; set; }
     public ReplaySystem record;
 
@@ -41,10 +41,16 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find("Player")?.GetComponent<PlayerMovement>();
         currentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
         LoadProgress();
-        FindAllResetableObject();
+        FindAllResettableObject();
         Physics2D.callbacksOnDisable = false;
+        UnityEngine.Screen.orientation = ScreenOrientation.LandscapeLeft;
+        Application.targetFrameRate = 60;
     }
-    private void FindAllResetableObject()
+    private void OnDestroy()
+    {
+        Debug.Log("PLayer was destroyed!");
+    }
+    private void FindAllResettableObject()
     {
         IEnumerable < IResettable > resettables = FindObjectsOfType<MonoBehaviour>().OfType<IResettable>();
         List<IResettable> resettableObjects = new List<IResettable>(resettables);

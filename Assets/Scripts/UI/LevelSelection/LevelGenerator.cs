@@ -10,8 +10,7 @@ public class LevelGenerator : MonoBehaviour
 
     private void Start()
     {
-        int count = 0;
-        count = Resources.LoadAll(levelScenePath).Length;
+        int count = GameManager.Instance.levelsData.levelsCount;
         LevelSelector lvl;
         for (int i = 0; i < count; i++)
         {

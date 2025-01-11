@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
         currentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
         LoadProgress();
         FindAllResetableObject();
+        Physics2D.callbacksOnDisable = false;
     }
     private void FindAllResetableObject()
     {
